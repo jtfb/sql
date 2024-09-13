@@ -1,7 +1,9 @@
 -- AGGREGATE
 /* 1. Write a query that determines how many times each vendor has rented a booth 
 at the farmer’s market by counting the vendor booth assignments per vendor_id. */
-
+SELECT vendor_id, count(vendor_id)
+FROM vendor_booth_assignments
+GROUP BY vendor_id
 
 
 /* 2. The Farmer’s Market Customer Appreciation Committee wants to give a bumper 
@@ -9,7 +11,16 @@ sticker to everyone who has ever spent more than $2000 at the market. Write a qu
 of customers for them to give stickers to, sorted by last name, then first name. 
 
 HINT: This query requires you to join two tables, use an aggregate function, and use the HAVING keyword. */
+SELECT c.customer_last_name, c.customer_first_name, total_spent
 
+FROM customer as c 
+INNER JOIN (
+		SELECT customer_id, sum(quantity*cost_to_customer_per_qty) as total_spent
+
+		FROM customer_purchases as cp
+		GROUP by customer_id
+		HAVING total_spent > 2000
+) x ON c.customer_id = x.customer_id
 
 
 --Temp Table
