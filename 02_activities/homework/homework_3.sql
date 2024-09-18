@@ -34,7 +34,16 @@ When inserting the new vendor, you need to appropriately align the columns to be
 -> To insert the new row use VALUES, specifying the value you want for each column:
 VALUES(col1,col2,col3,col4,col5) 
 */
+DROP TABLE IF EXISTS new_vendor;
 
+CREATE TEMP TABLE new_vendor AS
+
+SELECT * FROM vendor;
+
+INSERT INTO new_vendor
+VALUES('10','Thomass Superfood Store', 'Fresh Focused', 'Thomas', 'Rosenthal');
+
+SELECT * FROM new_vendor;
 
 
 -- Date
@@ -42,10 +51,24 @@ VALUES(col1,col2,col3,col4,col5)
 
 HINT: you might need to search for strfrtime modifers sqlite on the web to know what the modifers for month 
 and year are! */
+SELECT customer_id
+,strftime ('%m', market_date) as month
+,strftime ('%Y', market_date) as year
+FROM customer_purchases
 
-/* 2. Using the previous query as a base, determine how much money each customer spent in April 2019. 
+
+/* 2. Using the previous query as a base, determine how much money each customer spent in April 2022. 
 Remember that money spent is quantity*cost_to_customer_per_qty. 
 
 HINTS: you will need to AGGREGATE, GROUP BY, and filter...
 but remember, STRFTIME returns a STRING for your WHERE statement!! */
 
+SELECT customer_id
+,strftime ('%m', market_date) as month
+,strftime ('%Y', market_date) as year
+,SUM(quantity *cost_to_customer_per_qty) as money_spent
+FROM customer_purchases
+
+WHERE month='04'
+GROUP BY customer_id
+HAVING year='2022'
