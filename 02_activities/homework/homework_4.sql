@@ -33,14 +33,14 @@ each new market date for each customer, or select only the unique market dates p
 HINT: One of these approaches uses ROW_NUMBER() and one uses DENSE_RANK(). */
 
 SELECT
-	product_id
-	,vendor_id
-	,market_date as [original market date]
-	,ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY market_date DESC) as [market_date]
-	,customer_id
-	,quantity
-	,cost_to_customer_per_qty
-	,transaction_time
+    product_id
+    ,vendor_id
+    ,market_date as [original market date]
+    ,ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY market_date ASC) as [visit_date]
+    ,customer_id
+    ,quantity
+    ,cost_to_customer_per_qty
+    ,transaction_time
 FROM customer_purchases
 
 /* 2. Reverse the numbering of the query from a part so each customer’s most recent visit is labeled 1, 
