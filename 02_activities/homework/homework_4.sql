@@ -54,14 +54,14 @@ FROM
 		product_id
 		,vendor_id
 		,market_date as [original market date]
-		,ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY market_date DESC) as [new_market_date]
+		,ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY market_date DESC) as [visit_date]
 		,customer_id
 		,quantity
 		,cost_to_customer_per_qty
 		,transaction_time
 	FROM customer_purchases
 ) x
-WHERE new_market_date = 1;
+WHERE visit_date = 1;
 
 /* 3. Using a COUNT() window function, include a value along with each row of the 
 customer_purchases table that indicates how many different times that customer has purchased that product_id. */
